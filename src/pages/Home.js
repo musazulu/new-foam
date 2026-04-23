@@ -134,8 +134,8 @@ const Home = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="text-center p-6 bg-white rounded-lg border border-gray-200">
             <Truck className="w-12 h-12 text-primary-600 mx-auto mb-4" />
-            <h3 className="font-bold text-lg mb-2">Free Delivery</h3>
-            <p className="text-gray-600">Free delivery across Zimbabwe on orders over $100</p>
+            <h3 className="font-bold text-lg mb-2">Nationwide Delivery</h3>
+            <p className="text-gray-600">Delivery available across Zimbabwe</p>
           </div>
           <div className="text-center p-6 bg-white rounded-lg border border-gray-200">
             <Shield className="w-12 h-12 text-primary-600 mx-auto mb-4" />

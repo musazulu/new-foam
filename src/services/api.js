@@ -5,9 +5,6 @@ import axios from 'axios';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://127.0.0.1:8000';
 const API_URL = process.env.REACT_APP_API_URL || `${BACKEND_URL}/api`;
 
-console.log('Backend URL:', BACKEND_URL);
-console.log('API URL:', API_URL);
-
 const api = axios.create({
   baseURL: API_URL,
   headers: {
@@ -44,7 +41,7 @@ api.interceptors.response.use(
       
       if (refreshToken) {
         try {
-          const response = await axios.post(`${API_URL}/token/refresh/`, {
+          const response = await axios.post(`${API_URL}/auth/token/refresh/`, {
             refresh: refreshToken
           });
           
@@ -79,8 +76,8 @@ api.interceptors.response.use(
 
 // Auth Service
 export const authService = {
-  login: (credentials) => api.post('/token/', credentials),
-  register: (userData) => api.post('/accounts/register/', userData),
+  login: (credentials) => api.post('/auth/login/', credentials),
+  register: (userData) => api.post('/auth/register/', userData),
   logout: () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');

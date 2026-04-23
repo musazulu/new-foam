@@ -321,7 +321,7 @@ const Checkout = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Shipping</span>
-                    <span className="text-green-600 font-semibold">FREE</span>
+                    <span className="text-green-600 font-semibold">Calculated at checkout</span>
                   </div>
                   <div className="border-t pt-3">
                     <div className="flex justify-between text-lg font-bold">
@@ -340,7 +340,7 @@ const Checkout = () => {
                     </div>
                     <div>
                       <Truck className="w-6 h-6 text-green-600 mx-auto mb-1" />
-                      <div className="text-xs text-gray-600">Free Delivery</div>
+                      <div className="text-xs text-gray-600">Delivery Available</div>
                     </div>
                     <div>
                       <Check className="w-6 h-6 text-green-600 mx-auto mb-1" />

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { User, Mail, Lock, Home, CheckCircle } from 'lucide-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { authService } from '../services/api';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -86,32 +87,23 @@ const Register = () => {
     setLoading(true);
     
     try {
-      // TODO: Replace with actual API call
-      console.log('Registration attempt:', formData);
-      
-      // Simulate API call with delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      toast.success(
-        <div>
-          <div className="flex items-center">
-            <CheckCircle className="w-5 h-5 mr-2" />
-            Registration successful!
-          </div>
-          <div className="text-sm mt-1">
-            Welcome to BeddingZim! You can now sign in.
-          </div>
-        </div>,
-        { autoClose: 4000 }
-      );
-      
-      // Redirect to login page after successful registration
-      setTimeout(() => {
-        navigate('/login');
-      }, 2000);
+      await authService.register({
+        email: formData.email,
+        username: formData.email.split('@')[0],
+        password: formData.password,
+        password2: formData.confirmPassword,
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        phone_number: `+263${formData.phone.replace(/\D/g, '')}`,
+      });
+
+      toast.success('Registration successful! You can now sign in.', { autoClose: 4000 });
+      setTimeout(() => navigate('/login'), 2000);
       
     } catch (error) {
-      toast.error('Registration failed. Please try again.');
+      const data = error.response?.data;
+      const msg = data?.email?.[0] || data?.username?.[0] || data?.password?.[0] || data?.detail || 'Registration failed. Please try again.';
+      toast.error(msg);
       console.error('Registration error:', error);
     } finally {
       setLoading(false);

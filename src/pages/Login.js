@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Mail, Lock, LogIn, Home, AlertCircle } from 'lucide-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { authService } from '../services/api';
+import { loginSuccess } from '../store/slices/authSlice';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -11,6 +14,7 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const validateForm = () => {
     const newErrors = {};
@@ -42,42 +46,24 @@ const Login = () => {
     setLoading(true);
     
     try {
-      // TODO: Replace with actual API call
-      console.log('Login attempt:', { email, password, rememberMe });
-      
-      // For now, simulate successful login with delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // If remember me is checked, save email to localStorage
+      const response = await authService.login({ email, password });
+      const { access, refresh, user } = response.data;
+
+      dispatch(loginSuccess({ access, refresh, user }));
+
       if (rememberMe) {
         localStorage.setItem('rememberedEmail', email);
       } else {
         localStorage.removeItem('rememberedEmail');
       }
-      
-      toast.success(
-        <div className="flex items-center">
-          <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-          </svg>
-          Login successful! Redirecting...
-        </div>,
-        { autoClose: 2000 }
-      );
-      
-      // Redirect to profile after successful login
-      setTimeout(() => {
-        navigate('/profile');
-      }, 2000);
+
+      toast.success('Login successful! Redirecting...', { autoClose: 2000 });
+      setTimeout(() => navigate('/profile'), 2000);
       
     } catch (err) {
-      toast.error(
-        <div className="flex items-center">
-          <AlertCircle className="w-5 h-5 mr-2" />
-          Login failed. Please check your credentials and try again.
-        </div>
-      );
-      setErrors({ form: 'Invalid email or password' });
+      const msg = err.response?.data?.detail || 'Invalid email or password';
+      toast.error(msg);
+      setErrors({ form: msg });
     } finally {
       setLoading(false);
     }

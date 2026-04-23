@@ -178,11 +178,7 @@ const ProductCard = ({ product }) => {
           </div>
           
           {/* Delivery */}
-          <div className="text-sm text-gray-600 mt-1 flex items-center">
-            <div className="w-2 h-2 bg-green-500 rounded-full mr-1.5"></div>
-            <span className="font-medium text-green-600">FREE delivery</span>
-            <span className="text-gray-500 ml-1">to Zimbabwe</span>
-          </div>
+
         </div>
         
         {/* Stock Status */}

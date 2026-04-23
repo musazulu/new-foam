@@ -12,7 +12,7 @@ const Footer = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="text-center">
               <Truck className="w-10 h-10 text-blue-600 mx-auto mb-2" />
-              <h3 className="font-semibold mb-1">Free Delivery</h3>
+              <h3 className="font-semibold mb-1">Nationwide Delivery</h3>
               <p className="text-sm text-gray-600">Across Zimbabwe</p>
             </div>
             <div className="text-center">
@@ -20,11 +20,7 @@ const Footer = () => {
               <h3 className="font-semibold mb-1">Quality Guaranteed</h3>
               <p className="text-sm text-gray-600">100% Satisfaction</p>
             </div>
-            <div className="text-center">
-              <RotateCcw className="w-10 h-10 text-blue-600 mx-auto mb-2" />
-              <h3 className="font-semibold mb-1">Easy Returns</h3>
-              <p className="text-sm text-gray-600">30-Day Return Policy</p>
-            </div>
+
             <div className="text-center">
               <CreditCard className="w-10 h-10 text-blue-600 mx-auto mb-2" />
               <h3 className="font-semibold mb-1">Secure Payment</h3>

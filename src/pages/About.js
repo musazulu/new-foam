@@ -27,7 +27,7 @@ const About = () => {
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">Why Choose Us?</h2>
             <ul className="list-disc list-inside text-gray-600 mb-6 space-y-2">
               <li>Locally sourced and manufactured products</li>
-              <li>Free delivery across Zimbabwe</li>
+              <li>Delivery available across Zimbabwe</li>
               <li>Quality assurance and customer satisfaction guarantee</li>
               <li>Secure payment options</li>
               <li>Responsive customer support</li>

@@ -189,7 +189,7 @@ const Cart = () => {
                   
                   <div className="flex justify-between">
                     <span className="text-gray-600">Shipping</span>
-                    <span className="font-semibold text-green-600">FREE</span>
+                    <span className="font-semibold">Calculated at checkout</span>
                   </div>
                   
                   <div className="flex justify-between">
@@ -237,11 +237,11 @@ const Cart = () => {
                       </div>
                       <div>
                         <div className="text-green-600 font-bold text-sm">✓</div>
-                        <div className="text-xs text-gray-600 mt-1">Free Delivery</div>
+                        <div className="text-xs text-gray-600 mt-1">Delivery Available</div>
                       </div>
                       <div>
                         <div className="text-green-600 font-bold text-sm">✓</div>
-                        <div className="text-xs text-gray-600 mt-1">Easy Returns</div>
+                        <div className="text-xs text-gray-600 mt-1">Secure Payment</div>
                       </div>
                     </div>
                   </div>
