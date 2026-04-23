@@ -1,9 +1,9 @@
 // src/pages/Products.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { productService } from '../services/api';
 import ProductCard from '../components/products/ProductCard';
-import { Filter, Grid, List, ChevronDown, X, AlertCircle, RefreshCw } from 'lucide-react';
+import { Filter, X, AlertCircle, RefreshCw } from 'lucide-react';
 import { processProductImages } from '../utils/imageUtils';
 
 // Updated FALLBACK_CATEGORIES to match your database slugs exactly
@@ -19,8 +19,7 @@ const Products = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState([]);  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
     category: searchParams.get('category') || '',
@@ -42,7 +41,7 @@ const Products = () => {
   // Fetch products when filters change
   useEffect(() => {
     fetchProducts();
-  }, [filters.category, filters.search, filters.minPrice, filters.maxPrice, filters.rating, filters.sortBy]);
+  }, [fetchProducts]);
 
   const testApiConnection = async () => {
     try {
@@ -87,75 +86,43 @@ const Products = () => {
     }
   };
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
       const params = {};
 
-      // Apply filters
-      if (filters.category) {
-        console.log('Filtering by category:', filters.category);
-        params.category = filters.category;
-      }
-      if (filters.search) {
-        console.log('Filtering by search:', filters.search);
-        params.search = filters.search;
-      }
+      if (filters.category) params.category = filters.category;
+      if (filters.search) params.search = filters.search;
       if (filters.minPrice) params.min_price = filters.minPrice;
       if (filters.maxPrice) params.max_price = filters.maxPrice;
       if (filters.rating) params.rating = filters.rating;
 
-      // Apply sorting
       if (filters.sortBy) {
         switch (filters.sortBy) {
-          case 'price_low_high':
-            params.ordering = 'price_usd';
-            break;
-          case 'price_high_low':
-            params.ordering = '-price_usd';
-            break;
-          case 'rating':
-            params.ordering = '-average_rating';
-            break;
-          case 'popular':
-            params.ordering = '-total_sold';
-            break;
-          default:
-            params.ordering = '-created_at';
+          case 'price_low_high': params.ordering = 'price_usd'; break;
+          case 'price_high_low': params.ordering = '-price_usd'; break;
+          case 'rating': params.ordering = '-average_rating'; break;
+          case 'popular': params.ordering = '-total_sold'; break;
+          default: params.ordering = '-created_at';
         }
       }
 
-      console.log('Fetching products with params:', params);
       const response = await productService.getProducts(params);
-      console.log('Products API response:', response.data);
-
-      // ✅ ALWAYS use .results for DRF list views
       const productsData = response.data.results || [];
       const processedProducts = productsData.map(product => processProductImages(product));
-
-      console.log(`Found ${processedProducts.length} products`);
       setProducts(processedProducts);
-
-      if (processedProducts.length === 0) {
-        setError('No products found matching your criteria.');
-      }
+      if (processedProducts.length === 0) setError('No products found matching your criteria.');
 
     } catch (error) {
       console.error('Error fetching products:', error);
-
       let errorMessage = 'Failed to load products. ';
       if (error.response) {
         switch (error.response.status) {
-          case 404:
-            errorMessage += 'API endpoint not found.';
-            break;
-          case 500:
-            errorMessage += 'Server error.';
-            break;
-          default:
-            errorMessage += `Server error: ${error.response.status}`;
+          case 404: errorMessage += 'API endpoint not found.'; break;
+          case 500: errorMessage += 'Server error.'; break;
+          default: errorMessage += `Server error: ${error.response.status}`;
         }
       } else if (error.request) {
         errorMessage += 'Cannot connect to server. Make sure backend is running.';
@@ -168,7 +135,7 @@ const Products = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filters.category, filters.search, filters.minPrice, filters.maxPrice, filters.rating, filters.sortBy]);
 
   const handleFilterChange = (key, value) => {
     console.log(`Filter change: ${key} = ${value}`);

@@ -1,5 +1,5 @@
 // src/pages/ProductDetail.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { productService, authService } from '../services/api';
@@ -19,32 +19,8 @@ const ProductDetail = () => {
   const [reviewText, setReviewText] = useState('');
   const [submittingReview, setSubmittingReview] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
 
-  useEffect(() => {
-    checkAuthStatus();
-    if (id) {
-      fetchProduct();
-    }
-  }, [id]);
-
-  const checkAuthStatus = async () => {
-    try {
-      const user = await authService.getCurrentUser();
-      if (user) {
-        setIsAuthenticated(true);
-        setCurrentUser(user);
-      } else {
-        setIsAuthenticated(false);
-        setCurrentUser(null);
-      }
-    } catch (error) {
-      console.error('Auth check failed:', error);
-      setIsAuthenticated(false);
-    }
-  };
-
-  const fetchProduct = async () => {
+  const fetchProduct = useCallback(async () => {
     try {
       const res = await productService.getProductById(id);
       setProduct(res.data);
@@ -54,7 +30,28 @@ const ProductDetail = () => {
     } finally {
       setLoading(false);
     }
+  }, [id]);
+
+  const checkAuthStatus = async () => {
+    try {
+      const user = await authService.getCurrentUser();
+      if (user) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+    } catch (error) {
+      console.error('Auth check failed:', error);
+      setIsAuthenticated(false);
+    }
   };
+
+  useEffect(() => {
+    checkAuthStatus();
+    if (id) {
+      fetchProduct();
+    }
+  }, [id, fetchProduct]);
 
   const formatPrice = (price) => {
     if (price == null) return '0.00';
