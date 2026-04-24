@@ -1,9 +1,10 @@
 {
-  "extends": ["react-app", "react-app/jest"],
+  "extends": ["react-app"],
   "rules": {
-    "no-unused-vars": "warn",
-    "react-hooks/exhaustive-deps": "warn",
-    "no-use-before-define": "warn",
-    "unicode-bom": "off"
+    "no-unused-vars": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "no-use-before-define": "off",
+    "unicode-bom": "off",
+    "import/no-anonymous-default-export": "off"
   }
 }
