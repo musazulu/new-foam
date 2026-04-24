@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../store/slices/cartSlice';
 import { Heart, Star, ShoppingCart, Check, Image as ImageIcon } from 'lucide-react';
-import { getImageUrl, handleImageError, getCategoryIcon } from '../../utils/imageUtils';
+import { getImageUrl, getCategoryIcon } from '../../utils/imageUtils';
 
 const ProductCard = ({ product }) => {
   const [isLiked, setIsLiked] = useState(false);

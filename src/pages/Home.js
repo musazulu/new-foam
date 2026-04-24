@@ -7,7 +7,6 @@ import { ChevronRight, Truck, Shield, CreditCard, Headphones } from 'lucide-reac
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [sponsoredProducts, setSponsoredProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

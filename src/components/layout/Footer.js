@@ -1,7 +1,7 @@
 // src/components/Footer.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, Truck, RotateCcw, CreditCard } from 'lucide-react';
+import { Shield, Truck, CreditCard } from 'lucide-react';
 
 const Footer = () => {
   return (

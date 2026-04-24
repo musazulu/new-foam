@@ -38,11 +38,6 @@ const Products = () => {
     fetchCategories();
   }, []);
 
-  // Fetch products when filters change
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
-
   const testApiConnection = async () => {
     try {
       const response = await productService.getProducts({ page: 1, page_size: 1 });
@@ -136,6 +131,11 @@ const Products = () => {
       setLoading(false);
     }
   }, [filters.category, filters.search, filters.minPrice, filters.maxPrice, filters.rating, filters.sortBy]);
+
+  // Fetch products when filters change - placed after fetchProducts definition
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   const handleFilterChange = (key, value) => {
     console.log(`Filter change: ${key} = ${value}`);
